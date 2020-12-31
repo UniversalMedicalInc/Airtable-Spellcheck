@@ -29,7 +29,7 @@ function Spellcheck() {
         setRecords(records)
         const newStoredRecords = getRecords()
         console.log("false 37 newStoredRecords: ", newStoredRecords)
-        // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     }
 
     // const changedRecord = findChangedRecord(record
