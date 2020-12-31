@@ -18,19 +18,19 @@ function Spellcheck() {
 
     console.log(records[0])
     console.log(Object.values(records))
-    // if (records === getRecords()) {
-    //     console.log('no change', records)
-    // } else {
-    //     console.log("false 30 records: ", records)
-    //     console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    //     const storedRecords = getRecords()
-    //     console.log("false 33 storedRecords: ", storedRecords)
-    //     console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    //     setRecords(records)
-    //     const newStoredRecords = getRecords()
-    //     console.log("false 37 newStoredRecords: ", newStoredRecords)
-    //     console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    // }
+    if (records === getRecords()) {
+        console.log('no change', records)
+    } else {
+        console.log("false 30 records: ", records)
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        const storedRecords = getRecords()
+        console.log("false 33 storedRecords: ", storedRecords)
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        setRecords(records)
+        const newStoredRecords = getRecords()
+        console.log("false 37 newStoredRecords: ", newStoredRecords)
+        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    }
 
     // const changedRecord = findChangedRecord(record
 
