@@ -2,45 +2,55 @@ import {
     initializeBlock,
     useBase,
     useRecords,
-    TablePickerSynced,
     useGlobalConfig,
+    useLoadable, 
+    useWatchable,
+    useRecordById,
 } from '@airtable/blocks/ui';
+import { cursor } from '@airtable/blocks';
 import React from 'react';
-import { getRecords, setRecords, findChangedRecord } from './records'
 
 
 function Spellcheck() {
     const base = useBase();
     const globalConfig = useGlobalConfig();
-    const tableId = globalConfig.get('selectedTableId');
-    const table = base.getTableByIdIfExists(tableId);
-    const records = useRecords(table);
+    const table = base.getTableByName('Imported table');
+    // const records = useRecords(table);
+    const defaultFieldId = table.getFieldByName("AUDIT").id
+    const defaultRecordId = useRecords(table)[0].id
+    const watchedFields = ['AUDIT'].map((field) => table.getFieldByName(field).id)
+    useLoadable(cursor);
+    useWatchable(cursor, ['selectedRecordIds', 'selectedFieldIds']);
+    const fieldId = cursor.selectedFieldIds[0] || defaultFieldId
+    console.log("26 fieldId: ", fieldId)
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    const recordId = cursor.selectedRecordIds[0] || defaultRecordId
+    console.log("29 recordId: ", recordId)
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    const record = recordId ? useRecordById(table, recordId) : useRecords(table)[0]
+    console.log("32 record: ", record)
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    const cell = fieldId ? record.getCellValue(fieldId) : record.getCellValue("TL_ID")
+    console.log("35 cell: ", cell)
+    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-    console.log(records[0])
-    console.log(Object.values(records))
-    if (records === getRecords()) {
-        console.log('no change', records)
-    } else {
-        console.log("false 30 records: ", records)
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        const storedRecords = getRecords()
-        console.log("false 33 storedRecords: ", storedRecords)
-        console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-        setRecords(records)
-        const newStoredRecords = getRecords()
-        console.log("false 37 newStoredRecords: ", newStoredRecords)
-        // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    }
+    const field = watchedFields.includes(fieldId) ? <div>{cell}</div> : null;
 
-    // const changedRecord = findChangedRecord(record
+    // if (watchedFields.includes(cursor.selectedFieldIds[0])) {
+    //     console.log(record)
+    //     console.log(cell)
 
-    // console.log(changedRecord)
-    // YOUR CODE GOES HERE
+    // } 
+
+
+   
+
     return (
         <div>
-            <TablePickerSynced globalConfigKey="selectedTableId" />
-            Hello world 🚀
+            {field}
         </div>);
 }
+
+
 
 initializeBlock(() => <Spellcheck />);
