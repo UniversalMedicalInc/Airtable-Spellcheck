@@ -9,9 +9,9 @@ export const checkSpelling = async(words) => {
     filterByFormula = filterByFormula.slice(0, -2)
     filterByFormula+= ")"
     const res = await axiosInstance.get(filterByFormula)
+    console.log(res)
     try {   
         let results = res.data.records.map((record) => { return (record.fields.word)})
-        console.log(results)
         const errors = {}
 
         words.forEach((word, idx) => {
@@ -31,7 +31,7 @@ export const addToDictionary = async(word) => {
         "records": [
             {
                 "fields": {
-                    "word": word
+                    "word": word.toLowerCase()
                 }
             }
         ]
