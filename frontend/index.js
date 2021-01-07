@@ -181,7 +181,7 @@ function Spellcheck() {
             selectedRecords = allRecords.filter((record) => recordIds.includes(record.id))
             selectedFields = allFields.filter((field) => { return fieldIds.includes(field.id)})
         }
-        // let totalRecords = selectedRecords.length
+        let totalRecords = selectedRecords.length
         // selectedRecords.forEach((record, rIdx) => {
         //     let newFieldData = {}
         //     console.log(rIdx, "/", totalRecords)
