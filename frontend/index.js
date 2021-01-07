@@ -171,10 +171,10 @@ function Spellcheck() {
     }
     
     const findAndReplace = async(key, value, type) => {
-        // const fieldIds = cursor.selectedFieldIds
-        // const recordIds = cursor.selectedRecordIds
-        // let selectedRecords = allRecords
-        // let selectedFields = allFields
+        const fieldIds = cursor.selectedFieldIds
+        const recordIds = cursor.selectedRecordIds
+        let selectedRecords = allRecords
+        let selectedFields = allFields
 
 
         // if (type === "selected"){
