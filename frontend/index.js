@@ -177,10 +177,10 @@ function Spellcheck() {
         let selectedFields = allFields
 
 
-        // if (type === "selected"){
-        //     selectedRecords = allRecords.filter((record) => recordIds.includes(record.id))
-        //     selectedFields = allFields.filter((field) => { return fieldIds.includes(field.id)})
-        // }
+        if (type === "selected"){
+            selectedRecords = allRecords.filter((record) => recordIds.includes(record.id))
+            selectedFields = allFields.filter((field) => { return fieldIds.includes(field.id)})
+        }
         // let totalRecords = selectedRecords.length
         // selectedRecords.forEach((record, rIdx) => {
         //     let newFieldData = {}
