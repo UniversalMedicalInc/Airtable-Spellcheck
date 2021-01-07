@@ -171,37 +171,37 @@ function Spellcheck() {
     }
     
     const findAndReplace = async(key, value, type) => {
-        const fieldIds = cursor.selectedFieldIds
-        const recordIds = cursor.selectedRecordIds
-        let selectedRecords = allRecords
-        let selectedFields = allFields
+        // const fieldIds = cursor.selectedFieldIds
+        // const recordIds = cursor.selectedRecordIds
+        // let selectedRecords = allRecords
+        // let selectedFields = allFields
 
 
-        if (type === "selected"){
-            selectedRecords = allRecords.filter((record) => recordIds.includes(record.id))
-            selectedFields = allFields.filter((field) => { return fieldIds.includes(field.id)})
-        }
-        let totalRecords = selectedRecords.length
-        selectedRecords.forEach((record, rIdx) => {
-            let newFieldData = {}
-            console.log(rIdx, "/", totalRecords)
-            selectedFields.forEach((field) => {
-                const fieldId = field.id
+        // if (type === "selected"){
+        //     selectedRecords = allRecords.filter((record) => recordIds.includes(record.id))
+        //     selectedFields = allFields.filter((field) => { return fieldIds.includes(field.id)})
+        // }
+        // let totalRecords = selectedRecords.length
+        // selectedRecords.forEach((record, rIdx) => {
+        //     let newFieldData = {}
+        //     console.log(rIdx, "/", totalRecords)
+        //     selectedFields.forEach((field) => {
+        //         const fieldId = field.id
                 
-                let cellVal = record.getCellValue(fieldId)
-                if(cellVal){
-                    if (cellVal.includes(key)){
-                        const fieldName = table.getFieldById(fieldId).name
-                        cellVal = cellVal.replaceAll(key, value)
-                        newFieldData[fieldName] = cellVal
-                    }
-                }
-            })
-            if (Object.keys(newFieldData).length > 0)
-            table.updateRecordsAsync([
-                { id: record.id, fields: newFieldData },
-            ]);
-        })
+        //         let cellVal = record.getCellValue(fieldId)
+        //         if(cellVal){
+        //             if (cellVal.includes(key)){
+        //                 const fieldName = table.getFieldById(fieldId).name
+        //                 cellVal = cellVal.replaceAll(key, value)
+        //                 newFieldData[fieldName] = cellVal
+        //             }
+        //         }
+        //     })
+        //     if (Object.keys(newFieldData).length > 0)
+        //     table.updateRecordsAsync([
+        //         { id: record.id, fields: newFieldData },
+        //     ]);
+        // })
     }
 
     return (
