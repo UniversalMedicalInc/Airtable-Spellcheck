@@ -197,11 +197,11 @@ function Spellcheck() {
                     }
                 }
             })
-        //     if (Object.keys(newFieldData).length > 0)
-        //     table.updateRecordsAsync([
-        //         { id: record.id, fields: newFieldData },
-        //     ]);
-        // })
+            if (Object.keys(newFieldData).length > 0)
+            table.updateRecordsAsync([
+                { id: record.id, fields: newFieldData },
+            ]);
+        })
     }
 
     return (
