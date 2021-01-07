@@ -182,21 +182,21 @@ function Spellcheck() {
             selectedFields = allFields.filter((field) => { return fieldIds.includes(field.id)})
         }
         let totalRecords = selectedRecords.length
-        // selectedRecords.forEach((record, rIdx) => {
-        //     let newFieldData = {}
-        //     console.log(rIdx, "/", totalRecords)
-        //     selectedFields.forEach((field) => {
-        //         const fieldId = field.id
+        selectedRecords.forEach((record, rIdx) => {
+            let newFieldData = {}
+            console.log(rIdx, "/", totalRecords)
+            selectedFields.forEach((field) => {
+                const fieldId = field.id
                 
-        //         let cellVal = record.getCellValue(fieldId)
-        //         if(cellVal){
-        //             if (cellVal.includes(key)){
-        //                 const fieldName = table.getFieldById(fieldId).name
-        //                 cellVal = cellVal.replaceAll(key, value)
-        //                 newFieldData[fieldName] = cellVal
-        //             }
-        //         }
-        //     })
+                // let cellVal = record.getCellValue(fieldId)
+                // if(cellVal){
+                //     if (cellVal.includes(key)){
+                //         const fieldName = table.getFieldById(fieldId).name
+                //         cellVal = cellVal.replaceAll(key, value)
+                //         newFieldData[fieldName] = cellVal
+                //     }
+                // }
+            })
         //     if (Object.keys(newFieldData).length > 0)
         //     table.updateRecordsAsync([
         //         { id: record.id, fields: newFieldData },
