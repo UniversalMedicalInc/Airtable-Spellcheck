@@ -164,11 +164,11 @@ function Spellcheck() {
         }
     }
 
-    // const addToDictionary = async (error) => {
-    //     await dictionary.addToDictionary(error)
-    //     const newErrors = await dictionary.checkSpelling(words)
-    //     setErrors(newErrors)
-    // }
+    const addToDictionary = async (error) => {
+        await dictionary.addToDictionary(error)
+        const newErrors = await dictionary.checkSpelling(words)
+        setErrors(newErrors)
+    }
     
     const findAndReplace = async(key, value, type) => {
         const fieldIds = cursor.selectedFieldIds
