@@ -24,8 +24,6 @@ const removePunc = (cell) => {
     for (let i = 0; i < replacePunc.length; i++) {
         string = string.replaceAll(replacePunc[i], " ")
     }
-    // while (string.findIndex((element) => element === '  ')){
-    // }
     string = string.replaceAll('  ', ' ')
     return string.split(' ')
 }
@@ -39,7 +37,12 @@ function Spellcheck() {
     const [ignored, setIgnored] = useState([])
     const [checkStatus, setCheckStatus] = useState("notRun")
 
+    const [displaySettings, setDisplaySettings] = useState("none")
 
+    const [replaceKey, setReplaceKey] = useState('')
+    const [replaceValue, setReplaceValue] = useState(false)
+
+    // inline-block
     const statusText = {
         notRun: "Spell Check Not Run",
         empty: "Nothing to check in this cell",
@@ -54,19 +57,18 @@ function Spellcheck() {
     const base = useBase();
     const globalConfig = useGlobalConfig();
     const table = base.getTableByName('Imported table');
-
-    const defaultFieldId = table.getFieldByName("AUDIT").id
+    // const useDefault = false 
+    const defaultFieldId = table.fields[0].id
     const defaultRecordId = useRecords(table)[0].id
 
-    const watchedFields = ['AUDIT'].map((field) => table.getFieldByName(field).id)
+    const allRecords = useRecords(table)
+    const allFields = table.fields
+
     useLoadable(cursor);
     useWatchable(cursor, ['selectedRecordIds', 'selectedFieldIds']);
     const fieldId = cursor.selectedFieldIds[0] || defaultFieldId
-
     const recordId = cursor.selectedRecordIds[0] || defaultRecordId
-
     const record = recordId ? useRecordById(table, recordId) : useRecords(table)[0]
-
     const currentCell = fieldId ? record.getCellValue(fieldId) : record.getCellValue("TL_ID")
 
 
@@ -92,7 +94,6 @@ function Spellcheck() {
     const updateRecord = (editedWords) => {
         let newCell = cell
         Object.entries(editedWords).forEach(([oldWord, newWord]) => {
-            console.log(oldWord, ": ", newWord)
             newCell = newCell.replaceAll(oldWord, newWord)
         })
 
@@ -156,22 +157,58 @@ function Spellcheck() {
                 console.log(error)
                 if (error.message === "Network Error") {
                     setCheckStatus("networkError")
+                    setDisplaySettings(true)
                 }else {
                     setCheckStatus("emptyError")
                 }
         }
     }
 
-    const addToDictionary = async (error) => {
-        await dictionary.addToDictionary(error)
-        const newErrors = await dictionary.checkSpelling(words)
-        setErrors(newErrors)
-    }
+    // const addToDictionary = async (error) => {
+    //     await dictionary.addToDictionary(error)
+    //     const newErrors = await dictionary.checkSpelling(words)
+    //     setErrors(newErrors)
+    // }
+    
+    const findAndReplace = async(key, value, type) => {
+        const fieldIds = cursor.selectedFieldIds
+        const recordIds = cursor.selectedRecordIds
+        let selectedRecords = allRecords
+        let selectedFields = allFields
 
+
+        if (type === "selected"){
+            selectedRecords = allRecords.filter((record) => recordIds.includes(record.id))
+            selectedFields = allFields.filter((field) => { return fieldIds.includes(field.id)})
+        }
+        let totalRecords = selectedRecords.length
+        selectedRecords.forEach((record, rIdx) => {
+            let newFieldData = {}
+            console.log(rIdx, "/", totalRecords)
+            selectedFields.forEach((field) => {
+                const fieldId = field.id
+                
+                let cellVal = record.getCellValue(fieldId)
+                if(cellVal){
+                    if (cellVal.includes(key)){
+                        const fieldName = table.getFieldById(fieldId).name
+                        cellVal = cellVal.replaceAll(key, value)
+                        newFieldData[fieldName] = cellVal
+                    }
+                }
+            })
+            if (Object.keys(newFieldData).length > 0)
+            table.updateRecordsAsync([
+                { id: record.id, fields: newFieldData },
+            ]);
+        })
+    }
 
     return (
         <div>
+            <button onClick={() => {setDisplaySettings(!displaySettings)}}>Settings</button>
             <input
+                style={{ display: displaySettings ? "none" : "inline-block" }}
                 type="text"
                 onChange={(e) => {
                     globalConfig.setAsync('baseURL', e.currentTarget.value);
@@ -179,6 +216,7 @@ function Spellcheck() {
                 placeholder="Base URL"
             />
             <input
+                style={{ display: displaySettings ? "none" : "inline-block" }}
                 type="text"
                 onChange={(e) => {
                     globalConfig.setAsync('key', e.currentTarget.value);
@@ -204,11 +242,34 @@ function Spellcheck() {
                         newIgnore.push(error)
                         setIgnored(newIgnore)
                     }}>Ignore</button>
+                    <button onClick={() => {findAndReplace(error, editedWords[error])}}>Replace All</button>
                     <br />
                 </div>)
             })}</div>
             <button onClick={()=> { runSpellcheck()}}>Spell Check</button>
+            <br/>
+            <br/>
+            <br/>
 
+            <input
+                type="text"
+                onChange={(e) => {
+                    setReplaceKey(e.currentTarget.value);
+                }}
+                placeholder="Find"
+            />
+            <input
+                type="text"
+                onChange={(e) => {
+                    setReplaceValue(e.currentTarget.value);
+                }}
+                placeholder="Replace"
+            />
+
+            <button onClick={() => {
+
+                findAndReplace(replaceKey, replaceValue, 'selected')
+            }}>Replace</button>
         </div>);
 }
 
