@@ -7,7 +7,7 @@ Airtable currently has no spellcheck function, this custom app adds a spellcheck
 
 
 1) Download the app from the Airtable App Store.
-2) Copy the dictionary base from [here](https://airtable.com/shrQLb2AcTeNDzjs3)
+2) Copy the dictionary base from [here](https://airtable.com/shr4h3JBKLyK9KiYL)
 3) Go to [Airtable API](https://airtable.com/api). Open the Dictionary page and scroll down to Authetication. 
 4) Copy the Base URL (outlined in blue in the figure below).
 <img src="media/BASE_URL.png" alt="BASE_URL" />
