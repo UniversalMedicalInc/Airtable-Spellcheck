@@ -101,4 +101,22 @@ To compare the text in a cell to the dictionary, the cell string is split into a
 
 ## Correcting the Cell
 
-Once the cell is 
+Once every error has been corrected, added to the dictionary, or ignored, the cell is updated. An edited words object keeps track of the old words and the new words. Each entry in the edited words object is used to replace the old words with the new words in the cell's text. The selected cell is then updated using updateRecordsAsync.
+
+``` javascript
+    const updateRecord = (editedWords) => {
+        let newCell = cell
+        Object.entries(editedWords).forEach(([oldWord, newWord]) => {
+            newCell = newCell.replaceAll(oldWord, newWord)
+        })
+
+        const fieldName = table.getFieldById(fieldId).name
+        let newFieldData = {}
+        newFieldData[fieldName] = newCell
+        setIgnored([])
+        table.updateRecordsAsync([
+            { id: recordId, fields: newFieldData },
+        ]);
+
+    }
+```
