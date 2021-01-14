@@ -178,7 +178,6 @@ function Spellcheck() {
     }
     
     const findAndReplace = async(key, value, type) => {
-        console.log(value)
         const fieldIds = cursor.selectedFieldIds
         const recordIds = cursor.selectedRecordIds
         let selectedRecords = allRecords
@@ -242,9 +241,7 @@ function Spellcheck() {
                         setIgnored(newIgnore)
                     }}>Ignore</button>
                     <button style={{...styles.button, }} onClick={() => {
-                        console.log("button editedWords: ", editedWords); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                        console.log("button error: ", error); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-                        console.log("button editedWords[error]: ", editedWords[error]); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                        
                         
                         findAndReplace(error, editedWords[error])
                         
@@ -256,7 +253,6 @@ function Spellcheck() {
             <br/>
             <br/>
 
-            {/* <button onClick={() => {console.log("button editedWords: ", editedWords); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");}}>  editedWords </button> */}
             <br/>
 
             <input
