@@ -3,78 +3,70 @@ export default  {
     h1: {
         fontSize: 18,
         padding: 10,
-        textAlign: "center"
+        textAlign: "center",
+        fontWeight: "bold",
+        fontFamily: "'Courier New', monospace",
     },
     sentenceError: {
-        color: "red"
+        color: "red",
+        fontFamily: "'Courier New', monospace",
     },
     errorField: {
-        backgroundColor: "grey",
+        border: '1px solid red',
+        borderRadius: 2,
+        backgroundColor: 'rgb(235, 235, 235)',
         margin: 5,
         padding: 5
     },
     errorFieldText: {
-        color: "white",
+        color: "black",
         fontWeight: "bold",
         marginLeft: 5
     },
-    h1Options: {
+    statusDot: {
+        border: '1px solid black',
+        height: 12,
+        width: 12,
+        borderRadius: 6,
+        display: "inline-block"
+    },
+    status: {
         notRun: {
-            fontSize: 18,
-            padding: 10,
-            textAlign: "center",
-            color: "gold"
+            backgroundColor: "gold"
         },
         empty: {
-            fontSize: 18,
-            padding: 10,
-            textAlign: "center",
-            color: "black"
+            backgroundColor: "black"
         },
         networkError: {
-            fontSize: 18,
-            padding: 10,
-            textAlign: "center",
-            color: "red"
+            backgroundColor: "red"
         },
         emptyError: {
-            fontSize: 18,
-            padding: 10,
-            textAlign: "center",
-            color: "black"
+            backgroundColor: "black"
         },
         ok: {
-            fontSize: 18,
-            padding: 10,
-            textAlign: "center",
-            color: "green"
+            backgroundColor: "green"
         },
         okFixed: {
-            fontSize: 18,
-            padding: 10,
-            textAlign: "center",
-            color: "green"
+            backgroundColor: "green"
         },
         errorsDetected: {
-            fontSize: 18,
-            padding: 10,
-            textAlign: "center",
-            color: "red"
+            backgroundColor: "red"
         },
     },
     cellText: {
         margin: 5,
         border: '1px solid black',
-        padding: 5,
         borderRadius: 2,
-        backgroundColor: 'rgb(235, 235, 235)'
+        backgroundColor: 'rgb(235, 235, 235)',
+        padding: 5,
     },
     button: {
         margin: 1,
         border: 'none',
         padding: 3,
-        borderRadius: 2,
-        backgroundColor: 'lightblue'
+        borderRadius: 3,
+        backgroundColor: 'lightgrey',
+        boxShadow: '2px 2px'
     }
 
 }

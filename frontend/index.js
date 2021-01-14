@@ -6,6 +6,7 @@ import {
     useLoadable, 
     useWatchable,
     useRecordById,
+    TablePicker
 } from '@airtable/blocks/ui';
 import { cursor } from '@airtable/blocks';
 import React, { useState }from 'react';
@@ -37,12 +38,11 @@ function Spellcheck() {
     const [ignored, setIgnored] = useState([])
     const [checkStatus, setCheckStatus] = useState("notRun")
 
-    const [displaySettings, setDisplaySettings] = useState("none")
+    const [displaySettings, setDisplaySettings] = useState(false)
 
     const [replaceKey, setReplaceKey] = useState('')
     const [replaceValue, setReplaceValue] = useState(false)
 
-    // inline-block
     const statusText = {
         notRun: "Spell Check Not Run",
         empty: "Nothing to check in this cell",
@@ -56,10 +56,17 @@ function Spellcheck() {
 
     const base = useBase();
     const globalConfig = useGlobalConfig();
-    const table = base.getTableByName('Imported table');
+    const defaultTable = base.tables[0]
+
+    const [tableName, setTableName] = useState(defaultTable.name);
+    const table = base.getTableByNameIfExists(tableName);
+
+
     // const useDefault = false 
     const defaultFieldId = table.fields[0].id
     const defaultRecordId = useRecords(table)[0].id
+
+
 
     const allRecords = useRecords(table)
     const allFields = table.fields
@@ -69,7 +76,7 @@ function Spellcheck() {
     const fieldId = cursor.selectedFieldIds[0] || defaultFieldId
     const recordId = cursor.selectedRecordIds[0] || defaultRecordId
     const record = recordId ? useRecordById(table, recordId) : useRecords(table)[0]
-    const currentCell = fieldId ? record.getCellValue(fieldId) : record.getCellValue("TL_ID")
+    const currentCell = fieldId ? record.getCellValue(fieldId) : record.getCellValue(defaultFieldId)
 
 
 
@@ -156,8 +163,8 @@ function Spellcheck() {
         } catch(error) {
                 console.log(error)
                 if (error.message === "Network Error") {
-                    setCheckStatus("networkError")
                     setDisplaySettings(true)
+                    setCheckStatus("networkError")
                 }else {
                     setCheckStatus("emptyError")
                 }
@@ -171,6 +178,7 @@ function Spellcheck() {
     }
     
     const findAndReplace = async(key, value, type) => {
+        console.log(value)
         const fieldIds = cursor.selectedFieldIds
         const recordIds = cursor.selectedRecordIds
         let selectedRecords = allRecords
@@ -206,8 +214,15 @@ function Spellcheck() {
 
     return (
         <div>
+
+            <TablePicker
+                table={table}
+                onChange={newTable => {
+                    setTableName(newTable.name);
+                }}
+            />
             
-            <h1 style={styles.h1Options[checkStatus]}>{statusText[checkStatus]}</h1>
+            <div style={styles.h1}>{statusText[checkStatus]} <div style={{ ...styles.status[checkStatus], ...styles.statusDot}}></div></div>
             <p style={styles.cellText}>{sentence}</p>
             <div>{Object.entries(errors).map(([error, idx]) => {
                 if( ignored.includes(error)) {return null}
@@ -220,19 +235,28 @@ function Spellcheck() {
                         }}
                         placeholder="correct"
                     />
-                    <button style={styles.button} onClick={() => {addToDictionary(error)}}>Add To Dictionary</button>
-                    <button style={styles.button} onClick={() => {
+                    <button style={{ ...styles.button,}} onClick={() => {addToDictionary(error)}}>Add To Dictionary</button>
+                    <button style={{...styles.button,}} onClick={() => {
                         let newIgnore = ignored
                         newIgnore.push(error)
                         setIgnored(newIgnore)
                     }}>Ignore</button>
-                    <button style={styles.button} onClick={() => {findAndReplace(error, editedWords[error])}}>Replace All</button>
+                    <button style={{...styles.button, }} onClick={() => {
+                        console.log("button editedWords: ", editedWords); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                        console.log("button error: ", error); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                        console.log("button editedWords[error]: ", editedWords[error]); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                        
+                        findAndReplace(error, editedWords[error])
+                        
+                        }}>Replace All</button>
                     <br />
                 </div>)
             })}</div>
-            <button style={styles.button} onClick={()=> { runSpellcheck()}}>Spell Check</button>
+            <button style={{...styles.button, marginLeft: 5}} onClick={()=> { runSpellcheck()}}>Spell Check</button>
             <br/>
             <br/>
+
+            {/* <button onClick={() => {console.log("button editedWords: ", editedWords); console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");}}>  editedWords </button> */}
             <br/>
 
             <input
@@ -250,7 +274,7 @@ function Spellcheck() {
                 placeholder="Replace"
             />
 
-            <button style={styles.button} onClick={() => {
+            <button style={{...styles.button}} onClick={() => {
 
                 findAndReplace(replaceKey, replaceValue, 'selected')
             }}>Replace</button>
@@ -258,9 +282,9 @@ function Spellcheck() {
             <br />
             <br />
 
-            <button style={styles.button} onClick={() => { setDisplaySettings(!displaySettings) }}>Settings</button>
+            <button style={{...styles.button}} onClick={() => { setDisplaySettings(!displaySettings) }}>Settings</button>
             <input
-                style={{ display: displaySettings ? "none" : "inline-block" }}
+                style={{ display: displaySettings ? "inline-block" : "none"   }}
                 type="text"
                 onChange={(e) => {
                     globalConfig.setAsync('baseURL', e.currentTarget.value);
@@ -268,13 +292,14 @@ function Spellcheck() {
                 placeholder="Base URL"
             />
             <input
-                style={{ display: displaySettings ? "none" : "inline-block" }}
+                style={{ display: displaySettings ? "inline-block" : "none"  }}
                 type="text"
                 onChange={(e) => {
                     globalConfig.setAsync('key', e.currentTarget.value);
                 }}
                 placeholder="Key"
             />
+
         </div>);
 }
 
