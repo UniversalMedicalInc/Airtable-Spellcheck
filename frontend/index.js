@@ -206,25 +206,9 @@ function Spellcheck() {
 
     return (
         <div>
-            <button onClick={() => {setDisplaySettings(!displaySettings)}}>Settings</button>
-            <input
-                style={{ display: displaySettings ? "none" : "inline-block" }}
-                type="text"
-                onChange={(e) => {
-                    globalConfig.setAsync('baseURL', e.currentTarget.value);
-                }}
-                placeholder="Base URL"
-            />
-            <input
-                style={{ display: displaySettings ? "none" : "inline-block" }}
-                type="text"
-                onChange={(e) => {
-                    globalConfig.setAsync('key', e.currentTarget.value);
-                }}
-                placeholder="Key"
-            />
+            
             <h1 style={styles.h1Options[checkStatus]}>{statusText[checkStatus]}</h1>
-            <p>{sentence}</p>
+            <p style={styles.cellText}>{sentence}</p>
             <div>{Object.entries(errors).map(([error, idx]) => {
                 if( ignored.includes(error)) {return null}
                 return (<div key={idx} style={styles.errorField}>
@@ -236,17 +220,17 @@ function Spellcheck() {
                         }}
                         placeholder="correct"
                     />
-                    <button onClick={() => {addToDictionary(error)}}>Add To Dictionary</button>
-                    <button onClick={() => {
+                    <button style={styles.button} onClick={() => {addToDictionary(error)}}>Add To Dictionary</button>
+                    <button style={styles.button} onClick={() => {
                         let newIgnore = ignored
                         newIgnore.push(error)
                         setIgnored(newIgnore)
                     }}>Ignore</button>
-                    <button onClick={() => {findAndReplace(error, editedWords[error])}}>Replace All</button>
+                    <button style={styles.button} onClick={() => {findAndReplace(error, editedWords[error])}}>Replace All</button>
                     <br />
                 </div>)
             })}</div>
-            <button onClick={()=> { runSpellcheck()}}>Spell Check</button>
+            <button style={styles.button} onClick={()=> { runSpellcheck()}}>Spell Check</button>
             <br/>
             <br/>
             <br/>
@@ -266,10 +250,31 @@ function Spellcheck() {
                 placeholder="Replace"
             />
 
-            <button onClick={() => {
+            <button style={styles.button} onClick={() => {
 
                 findAndReplace(replaceKey, replaceValue, 'selected')
             }}>Replace</button>
+
+            <br />
+            <br />
+
+            <button style={styles.button} onClick={() => { setDisplaySettings(!displaySettings) }}>Settings</button>
+            <input
+                style={{ display: displaySettings ? "none" : "inline-block" }}
+                type="text"
+                onChange={(e) => {
+                    globalConfig.setAsync('baseURL', e.currentTarget.value);
+                }}
+                placeholder="Base URL"
+            />
+            <input
+                style={{ display: displaySettings ? "none" : "inline-block" }}
+                type="text"
+                onChange={(e) => {
+                    globalConfig.setAsync('key', e.currentTarget.value);
+                }}
+                placeholder="Key"
+            />
         </div>);
 }
 

@@ -61,6 +61,20 @@ export default  {
             textAlign: "center",
             color: "red"
         },
+    },
+    cellText: {
+        margin: 5,
+        border: '1px solid black',
+        padding: 5,
+        borderRadius: 2,
+        backgroundColor: 'rgb(235, 235, 235)'
+    },
+    button: {
+        margin: 1,
+        border: 'none',
+        padding: 3,
+        borderRadius: 2,
+        backgroundColor: 'lightblue'
     }
 
 }
