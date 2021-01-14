@@ -1,6 +1,6 @@
 # Overview
 
-Airtable currently has no spellcheck fuction, this custom app adds a spellcheck function to an Airtable Base as well as a Find and Replace function. It utilizes a separate Airtable Base to store the dictionary allowing each user to customize the dictionary.
+Airtable currently has no spellcheck function, this custom app adds a spellcheck function to an Airtable Base as well as a Find and Replace function. It utilizes a separate Airtable Base to store the dictionary allowing each user to customize the dictionary.
 
 
 ## Setup
@@ -35,7 +35,7 @@ Airtable currently has no spellcheck fuction, this custom app adds a spellcheck 
 ## Cursor
 
 ### Spell Check
-For the spell check function, the Cursor hook from Airtable Blocks SDK is used extract the selected Record ID and the slected Field ID, if no field is selected the first field and record are selected by default.
+For the spell check function, the Cursor hook from Airtable Blocks SDK is used to extract the selected Record ID and the selected Field ID, if no field is selected the first field and record are selected by default.
 
 ``` javascript
     useLoadable(cursor);
@@ -48,7 +48,7 @@ For the spell check function, the Cursor hook from Airtable Blocks SDK is used e
 
 ### Find and Replace
 
-For the find and replace function, replacements are only made in the area selected by the cursor, this is also accomplished using the Cursor. On initialization all fields and records are stored as constants. When a find and replace is exicuted, these records and fields are filtered by the currently selected field IDs and recordIDs  
+For the find and replace function, replacements are only made in the area selected by the cursor, this is also accomplished using the Cursor. On initialization, all fields and records are stored as constants. When a find and replace is executed, these records and fields are filtered by the currently selected field IDs and record IDs.  
 
 ``` javascript
     const allRecords = useRecords(table)
@@ -70,7 +70,7 @@ For the find and replace function, replacements are only made in the area select
 
 ## Dictionary Comparison
 
-To compare the text in a cell to the dictionary, the cell string is split into a words array and passed as an argument to checkSpelling. Each word is added to a filterByFormula param which is is used in an AXIOS GET request to the Dictionary Base. The results are compared to the words. Any word not included in the results is not included in the dictionary and therefore is a spelling error. 
+To compare the text in a cell to the dictionary, the cell string is split into a words array and passed as an argument to checkSpelling. Each word is added to a filterByFormula param which is used in an AXIOS GET request to the Dictionary Base. The results are compared to the words. Any word not included in the results is not included in the dictionary and therefore is a spelling error. 
 
 ```javascript
     export const checkSpelling = async(words) => {
@@ -101,7 +101,7 @@ To compare the text in a cell to the dictionary, the cell string is split into a
 
 ## Correcting the Cell
 
-Once every error has been corrected, added to the dictionary, or ignored, the cell is updated. An edited words object keeps track of the old words and the new words. Each entry in the edited words object is used to replace the old words with the new words in the cell's text. The selected cell is then updated using updateRecordsAsync.
+Once every error has been corrected, added to the dictionary, or ignored, the cell is updated. An edited words object keeps track of the old words and new words. Each entry in the edited words object is used to replace the old words with the new words in the cell's text. The selected cell is then updated using updateRecordsAsync.
 
 ``` javascript
     const updateRecord = (editedWords) => {
